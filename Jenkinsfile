@@ -6,7 +6,7 @@ pipeline {
         stage ("Build Docker Image") {
             steps {
                 script {
-                    dockerapp = docker.build("abcs89/kube-news:${env.BUILD_ID}", '-f ./src/Dockerfile ./src')
+                    dockerapp = docker.build("abcs89/kube-news:${env.BUILD_ID}", '-f ./kubenews/src/Dockerfile ./kubenews/src')
                 }
             }
         }
@@ -28,8 +28,8 @@ pipeline {
             }
             steps {
                 withKubeConfig([credentialsId: 'kubeconfig']) {
-                    sh 'sed -i "s/{{TAG}}/$tag_version/g" ./k8s/deploy.yml'
-                    sh 'kubectl apply -f ./k8s/deploy.yml'
+                    sh 'sed -i "s/{{TAG}}/$tag_version/g" ./kubenews/k8s/deploy.yml'
+                    sh 'kubectl apply -f ./kubenews/k8s/deploy.yml'
                 }
             }
 
