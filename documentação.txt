@@ -1,0 +1,40 @@
+Instalar jenkins, docker e kubectl no linux
+
+instalar java {
+    apt update
+    apt install openjdk-17-jdk -y
+}
+
+instalar jenkins ubuntu {
+    usar codigos do site: long term
+        https://www.jenkins.io/doc/book/installing/linux/#debianubuntu
+}
+
+instalar docker {
+    instalação basica docker
+        curl -fsSL https://get.docker.com | sh
+
+    add usuario ao grupo docker
+        usermod -aG docker jenkins
+
+    restart jenkins
+        systemctl restart jenkins
+        systemctl status jenkins
+}
+
+instalar kubectl{
+    instalar pelo script Install using native package management  do site:
+        https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
+}
+
+usar IP do serviço na porta :8080
+
+pegar a senha via link do jenkins dentro da VM
+
+Gerenciar extensões dentro jenkins
+    add 
+        docker e docker pipeline
+        kubernetes CLI
+
+
+ ssh-keygen -t rsa -b 4096   --- gerar ssh-key
