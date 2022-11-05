@@ -1,0 +1,55 @@
+  - name: Instalação Jenkins
+    hosts: jenkins
+    remote_user: root
+    tasks:
+    - name: Instalação Java
+      ansible.builtin.apt:
+        name: openjdk-17-jdk
+        state: present
+        update_cache: yes
+    - name: Adicionando a chave do repositório jenkins
+      ansible.builtin.apt_key:
+        url: https://pkg.jenkins.io/debian-stable/jenkins.io.key
+        state: present
+    - name: Adicionando o REPOSITÓRIO jenkins
+      ansible.builtin.apt_repository:
+        repo: deb https://pkg.jenkins.io/debian-stable binary/
+        state: present
+    - name: Instalação Jenkins
+      ansible.builtin.apt:
+        name: jenkins
+        state: present
+
+    - name: coleta senha inicial jenkins
+      ansible.builtin.command: cat /var/lib/jekins/secrets/initialAdminPassword
+      register: chave
+
+    - name: exibindo senha inicial jenkins
+      ansible.builtin.debug:
+        msg: "{{ chave }}"
+      when: chave.stdout != ""
+
+
+  - name: Instalação Docker
+    hosts: jenkins
+    remote_user: root
+    tasks:
+    - name: Instalação de pré requisitos
+      apt:
+        name: ca-certificates, curl, gnupg, lsb-release
+        state: present
+
+    - name: Adicionando a CHAVE do repositório Docker
+      ansible.builtin.apt_key:
+      url:   https://download.docker.com/linux/ubuntu/gpg
+      state: present
+    - name: Adicionando o REPOSITÓRIO Docker
+      ansible.builtin.apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+
+    - name: Instalação Docker
+      ansible.builtin.apt:
+        name: docker-ce, docker-ce-cli, containerd.io
+        state: present
+        update_cache: yes
