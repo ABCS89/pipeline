@@ -19,6 +19,7 @@
       ansible.builtin.apt:
         name: jenkins
         state: present
+        update_cache: yes
 
     - name: coleta senha inicial jenkins
       ansible.builtin.command: cat /var/lib/jekins/secrets/initialAdminPassword
@@ -38,18 +39,3 @@
       apt:
         name: ca-certificates, curl, gnupg, lsb-release
         state: present
-
-    - name: Adicionando a CHAVE do repositório Docker
-      ansible.builtin.apt_key:
-      url:   https://download.docker.com/linux/ubuntu/gpg
-      state: present
-    - name: Adicionando o REPOSITÓRIO Docker
-      ansible.builtin.apt_repository:
-        repo: deb https://download.docker.com/linux/ubuntu bionic stable
-        state: present
-
-    - name: Instalação Docker
-      ansible.builtin.apt:
-        name: docker-ce, docker-ce-cli, containerd.io
-        state: present
-        update_cache: yes
