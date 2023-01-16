@@ -1,14 +1,10 @@
 terraform {
   required_providers {
-    digitalocean = {
-      source  = "digitalocean/digitalocean"
-      version = "~> 2.0"
+    aws = {
+      source = "hashicorp/aws"
+      version = "~> 4.0"
     }
   }
-}
-
-provider "digitalocean" {
-  token = var.do_token
 }
 
 resource "digitalocean_droplet" "jenkins" {
@@ -21,30 +17,6 @@ resource "digitalocean_droplet" "jenkins" {
 
 data "digitalocean_ssh_key" "ssh_key" {
   name = var.ssh_key_name
-}
-
-resource "digitalocean_kubernetes_cluster" "k8s" {
-  name    = "k8s"
-  region  = var.region
-  version = "1.24.4-do.0"
-
-  node_pool {
-    name       = "default"
-    size       = "s-2vcpu-2gb"
-    node_count = 2
-  }
-}
-
-variable "region" {
-  default = ""
-}
-
-variable "do_token" {
-  default = ""
-}
-
-variable "ssh_key_name" {
-  default = ""
 }
 
 output "jenkins_ip" {
